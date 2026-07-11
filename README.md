@@ -1,3 +1,3 @@
 # softmax_IP_verification
-A certification platform for softmax IP core
+A certification platform for softmax IP core\n
 RTL code written by wbShao @IMECAS
