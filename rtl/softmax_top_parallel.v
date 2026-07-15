@@ -17,6 +17,9 @@ module softmax_top_parallel #(
     output wire                                  done
 );
 
+    localparam integer INPUT_BUS_WIDTH =
+        NUM_ELEMENTS * DATA_WIDTH;
+
     wire signed [DATA_WIDTH-1:0] global_max;
     wire                         max_valid;
 
@@ -32,42 +35,69 @@ module softmax_top_parallel #(
         .valid_out (max_valid)
     );
 
-    reg signed [DATA_WIDTH-1:0] data_delay_reg [0:NUM_ELEMENTS-1];
-    reg signed [DATA_WIDTH-1:0] cordic_in_data  [0:NUM_ELEMENTS-1];
-    reg                         cordic_in_valid;
-    integer i;
+    reg [INPUT_BUS_WIDTH-1:0]
+        data_delay_pipeline [0:TREE_LEVELS-1];
 
+    integer delay_index;
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            for (i = 0; i < NUM_ELEMENTS; i = i + 1)
-                data_delay_reg[i] <= {DATA_WIDTH{1'b0}};
-        end else if (array_valid) begin
-            for (i = 0; i < NUM_ELEMENTS; i = i + 1)
-                data_delay_reg[i] <=
-                    array_in[(i*DATA_WIDTH) +: DATA_WIDTH];
+            for (delay_index = 0;
+                 delay_index < TREE_LEVELS;
+                 delay_index = delay_index + 1) begin
+                data_delay_pipeline[delay_index] <=
+                    {INPUT_BUS_WIDTH{1'b0}};
+            end
         end
-    end
-
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            cordic_in_valid <= 1'b0;
-            for (i = 0; i < NUM_ELEMENTS; i = i + 1)
-                cordic_in_data[i] <= {DATA_WIDTH{1'b0}};
-        end else begin
-            cordic_in_valid <= max_valid;
-            if (max_valid) begin
-                for (i = 0; i < NUM_ELEMENTS; i = i + 1)
-                    cordic_in_data[i] <= data_delay_reg[i] - global_max;
+        else begin
+            data_delay_pipeline[0] <= array_in;
+            for (delay_index = 1;
+                 delay_index < TREE_LEVELS;
+                 delay_index = delay_index + 1) begin
+                data_delay_pipeline[delay_index] <=
+                    data_delay_pipeline[delay_index-1];
             end
         end
     end
 
-    wire signed [DATA_WIDTH-1:0] cordic_out_data [0:NUM_ELEMENTS-1];
-    wire [NUM_ELEMENTS-1:0]      cordic_out_valid;
+    reg signed [DATA_WIDTH-1:0]
+        cordic_in_data [0:NUM_ELEMENTS-1];
+    reg cordic_in_valid;
+    integer input_index;
+
+    always @(posedge clk or negedge rst_n) begin
+        if (!rst_n) begin
+            cordic_in_valid <= 1'b0;
+            for (input_index = 0;
+                 input_index < NUM_ELEMENTS;
+                 input_index = input_index + 1) begin
+                cordic_in_data[input_index] <=
+                    {DATA_WIDTH{1'b0}};
+            end
+        end
+        else begin
+            cordic_in_valid <= max_valid;
+            if (max_valid) begin
+                for (input_index = 0;
+                     input_index < NUM_ELEMENTS;
+                     input_index = input_index + 1) begin
+                    cordic_in_data[input_index] <=
+                        $signed(data_delay_pipeline[TREE_LEVELS-1][
+                            (input_index*DATA_WIDTH) +: DATA_WIDTH
+                        ]) - global_max;
+                end
+            end
+        end
+    end
+
+    wire signed [DATA_WIDTH-1:0]
+        cordic_out_data [0:NUM_ELEMENTS-1];
+    wire [NUM_ELEMENTS-1:0] cordic_out_valid;
 
     genvar lane;
     generate
-        for (lane = 0; lane < NUM_ELEMENTS; lane = lane + 1) begin : gen_cordic_lane
+        for (lane = 0;
+             lane < NUM_ELEMENTS;
+             lane = lane + 1) begin : gen_cordic_lane
             cordic_top #(
                 .DATA_WIDTH (DATA_WIDTH)
             ) u_cordic_top (
@@ -86,7 +116,7 @@ module softmax_top_parallel #(
 
     wire cluster_valid;
     assign cluster_valid = cordic_out_valid[0];
-    assign exp_valid     = cluster_valid;
+    assign exp_valid = cluster_valid;
 
     tree_accumulator #(
         .DATA_WIDTH   (DATA_WIDTH),
