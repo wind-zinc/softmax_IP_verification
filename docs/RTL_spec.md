@@ -44,9 +44,9 @@ SUM_WIDTH   = DATA_WIDTH + TREE_LEVELS
 | 信号 					| 方向 		| 位宽 							| 说明 						|
 | `clk` 				| input 	| 1 							| 工作时钟，上升沿触发 		|
 | `rst_n` 				| input 	| 1 							| 异步低有效复位 			|
-| `array_in` 			| input 	| `NUM_ELEMENTS × DATA_WIDTH` 	| 并行有符号定点输入向量 	|
+| `array_in` 			| input 	| `NUM_ELEMENTS × DATA_WIDTH` 	| 并行有符号定点输入向量   	|
 | `array_valid` 		| input 	| 1 							| 输入向量有效指示 			|	
-| `softmax_array_out` 	| output 	| `NUM_ELEMENTS × DATA_WIDTH` 	| 并行无符号定点概率向量 	|
+| `softmax_array_out` 	| output 	| `NUM_ELEMENTS × DATA_WIDTH` 	| 并行无符号定点概率向量   	|
 | `softmax_valid` 		| output 	| 1 							| 输出向量有效指示 			|
 ```
 第 `i` 个元素在打包总线中的位置为：
