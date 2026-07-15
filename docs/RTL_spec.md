@@ -19,12 +19,12 @@ softmax_complete_top
 ```
 
 ## 2. 参数
-
+```text
 | 参数 				| 默认值 	| 说明 								|
 | `DATA_WIDTH` 		| 32 		| 每个输入、输出元素的位宽 			|
 | `FRACTIONAL_BITS` | 16 		| 定点小数位数，默认格式为 Q16.16 	|
 | `NUM_ELEMENTS` 	| 8 		| 并行输入和输出的元素数量 			|
-
+```
 内部参数自动计算：
 
 ```text
@@ -40,7 +40,7 @@ SUM_WIDTH   = DATA_WIDTH + TREE_LEVELS
 已验证的 `NUM_ELEMENTS` 配置为 4、8、13 和 16。
 
 ## 3. 顶层接口
-
+```text
 | 信号 					| 方向 		| 位宽 							| 说明 						|
 | `clk` 				| input 	| 1 							| 工作时钟，上升沿触发 		|
 | `rst_n` 				| input 	| 1 							| 异步低有效复位 			|
@@ -48,7 +48,7 @@ SUM_WIDTH   = DATA_WIDTH + TREE_LEVELS
 | `array_valid` 		| input 	| 1 							| 输入向量有效指示 			|	
 | `softmax_array_out` 	| output 	| `NUM_ELEMENTS × DATA_WIDTH` 	| 并行无符号定点概率向量 	|
 | `softmax_valid` 		| output 	| 1 							| 输出向量有效指示 			|
-
+```
 第 `i` 个元素在打包总线中的位置为：
 
 ```systemverilog
@@ -143,13 +143,13 @@ softmax_array_out[i] = (exp_array[i] << FRACTIONAL_BITS) / sum
 ```text
 LATENCY = 22 + 2 × TREE_LEVELS
 ```
-
+```text
 | NUM_ELEMENTS 	| TREE_LEVELS 	| Monitor 观察延迟 	|
 | 4 			| 2 			| 26 cycles 		|
 | 8 			| 3 			| 28 cycles 		|
 | 13 			| 4 			| 30 cycles 		|
 | 16 			| 4 			| 30 cycles 		|
-
+```
 该数值包含 monitor clocking block 的采样口径。若从 RTL 寄存器边界采用不同方式定义延迟，可能出现一拍的计数口径差异，因此 testbench 应统一以输入 monitor 和输出 monitor 的时间戳差作为判断标准。
 
 流水线充满后，RTL 支持每个周期接收一笔输入，并在对应延迟后每个周期产生一笔输出。
