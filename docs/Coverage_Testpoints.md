@@ -11,13 +11,13 @@
 
 ## 2. 采样条件
 ```text
-| 覆盖对象  	| 采样条件 																|
+| 覆盖对象    	| 采样条件 														  	  	|
 | 输入特征 		| `rst_n == 1` 且 `array_valid == 1`，input monitor 发布输入事务时采样	|
 | 输出特征 		| `softmax_valid == 1`，output monitor 发布输出事务时采样 				|
-| Burst/Gap 	| coverage component 每个 monitor clocking block 周期观察 `array_valid` |
-| 复位 			| 检测到一次新的低有效复位区间时采样 									|
-| 延迟 			| 输入事务入队时间戳与对应输出事务时间戳配对后采样 						|
-| 数值误差		| scoreboard 成功配对 expected transaction 和 actual transaction 后采样 |
+| Burst/Gap 	| coverage component 每个 monitor clocking block 周期观察 `array_valid`   |
+| 复位 			| 检测到一次新的低有效复位区间时采样 								    	|
+| 延迟 			| 输入事务入队时间戳与对应输出事务时间戳配对后采样 			    			|
+| 数值误差		| scoreboard 成功配对 expected transaction 和 actual transaction 后采样   |
 ```
 如果输入或输出含有 X/Z，coverage component 会增加 unknown 计数并报告 warning，不使用该事务更新正常功能 covergroup。
 
@@ -54,7 +54,7 @@ span = maximum(input) - minimum(input)
 
 `cp_range` 的分箱如下：
 ```text
-| 分箱   | Q16.16 数值条件	   	|
+| 分箱     | Q16.16 数值条件	   	|
 | Zero   | `span == 0`			|
 | Small  | `0 < span <= 1.0` 	|
 | Medium | `1.0 < span <= 4.0` 	|
@@ -197,7 +197,7 @@ sum_difference = abs(sum(softmax_array_out) - expected_sum)
 | Single 	| 1 		|
 | Short 	| 2–4 		|
 | Medium 	| 5–16 		|
-| Long 		| 17 及以上 |
+| Long 		| 17 及以上   |
 ```
 ### 5.2 Gap 长度 `gap_cg`
 
