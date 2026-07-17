@@ -186,9 +186,9 @@ The RTL implementation was preserved, while the entire verification methodology 
 
 # Author
 
-**Wind Zinc @IHEP,CAS**
+**dyZhang @IHEP,CAS  ,  W.Shao @IMECAS** 
 
-Digital IC Verification / FPGA Development
+Digital IC Verification / Digital IC Design
 
 ---
 
