@@ -28,7 +28,7 @@ The original project only contained a traditional Verilog testbench. The verific
 
 # Verification Architecture
 
-<img width="300" height="325" alt="72aec8f7-810a-460f-91b2-9b834eb2eb31" src="https://github.com/user-attachments/assets/0eee9ee9-3172-4871-83e3-001c743b6674" />
+<img src="docs/72aec8f7-810a-460f-91b2-9b834eb2eb31.png" width="450px" >
 
 ---
 
@@ -186,11 +186,32 @@ The RTL implementation was preserved, while the entire verification methodology 
 
 ---
 
+# Verification Results
+
+The Softmax IP was verified using a reusable UVM verification environment with both directed and constrained-random testcases.
+
+Verification activities included:
+
+- Directed functional verification
+- Constrained-random verification
+- Runtime reset verification
+- Stream mode verification
+- Corner case verification
+- Functional coverage collection
+- Scoreboard-based result checking
+- Regression testing
+
+Coverage Summary
+
+<img src="docs/cov_report.png" width="600px" >
+
+---
+
 # Author
 
 **dyZhang @IHEP,CAS  ,  W.Shao @IMECAS** 
 
-Digital IC Verification / Digital IC Design
+Verification / Design
 
 ---
 
