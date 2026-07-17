@@ -1,8 +1,10 @@
 # Softmax IP Verification Platform
 
-![UVM](https://img.shields.io/badge/UVM-SystemVerilog-blue)
-![Coverage](https://img.shields.io/badge/Functional%20Coverage-92%25-brightgreen)
-![Code Coverage](https://img.shields.io/badge/Code%20Coverage-99%25-success)
+![Methodology](https://img.shields.io/badge/Methodology-SystemVerilog%20%2B%20UVM-orange)
+![Functional Coverage](https://img.shields.io/badge/Functional%20Coverage-91.25%25-brightgreen)
+![Code Coverage-Line](https://img.shields.io/badge/Code%20Coverage-Line%2099.30%25-brightgreen)
+![Code Coverage-Branch](https://img.shields.io/badge/Code%20Coverage-Branch%2097.77%25-brightgreen)
+![Simulation](https://img.shields.io/badge/Simulator-VCS%20V--2023.12--SP2-blue)
 
 > A reusable UVM-based verification platform for a parameterized Softmax IP core.
 
