@@ -28,7 +28,7 @@ The original project only contained a traditional Verilog testbench. The verific
 
 # Verification Architecture
 
-<img width="607.5" height="648" alt="72aec8f7-810a-460f-91b2-9b834eb2eb31" src="https://github.com/user-attachments/assets/0eee9ee9-3172-4871-83e3-001c743b6674" />
+<img width="300" height="325" alt="72aec8f7-810a-460f-91b2-9b834eb2eb31" src="https://github.com/user-attachments/assets/0eee9ee9-3172-4871-83e3-001c743b6674" />
 
 ---
 
